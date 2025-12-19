@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Undian Random</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+    button {
+      font-size: 24px;
+      padding: 15px 40px;
+      cursor: pointer;
+    }
+    #winner {
+      margin-top: 40px;
+      font-size: 32px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎉 UNDIAN PESERTA 🎉</h1>
+
+<button onclick="pickWinner()">UNDI</button>
+
+<div id="winner">—</div>
+
+<script>
+let participants = [];
+
+fetch("https://docs.google.com/spreadsheets/d/1tOFJI3BRPlTCsuq6GWk7aZ-ygrscOXl9/export?format=csv")
+  .then(res => res.text())
+  .then(text => {
+    const rows = text.split("\n").slice(1);
+    participants = rows.map(r => r.split(",")[1]).filter(Boolean);
+  });
+
+function pickWinner() {
+  if (participants.length === 0) {
+    alert("Peserta sudah habis!");
+    return;
+  }
+
+  const index = Math.floor(Math.random() * participants.length);
+  const winner = participants[index];
+
+  document.getElementById("winner").innerText = "🎉 " + winner;
+
+  participants.splice(index, 1);
+}
+</script>
+
+</body>
+</html>
